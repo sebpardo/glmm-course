@@ -4,7 +4,7 @@ library(broom)
 library(tidyr)
 library(lme4)
 
-d2 <- readr::read_csv("radon.csv")
+d2 <- readr::read_csv("drafts/radon.csv")
 set.seed(1)
 d2 <- filter(d2, county %in% sample(unique(d2$county), 40))
 glimpse(d2)

@@ -1,0 +1,39 @@
+```{r}
+d <- readr::read_csv("data/raw/sopow-2015/Hylastes_data.csv")
+d
+table(d$treat)
+hist(d$leader)
+
+library(dplyr)
+d <- d %>% 
+  mutate(log_leader = log(leader))
+
+library(lme4)
+m <- glmer(mort ~ as.factor(treat) + (1 | plot/row), data = d, family = "binomial")
+summary(m)
+
+# shortcut!
+hist(log(d$log_leader))
+nrow(d)
+# d <- filter(d, leader > 0)
+nrow(d)
+
+range(d$leader)
+
+library(nlme)
+m <- lme(log(leader) ~ 0 + as.factor(treat), random = ~ 1 | plot/row, data = d)
+summary(m)
+
+# m <- lme(leader ~ 0 + as.factor(treat), random = ~ 1 | plot/row, data = d)
+
+plot(m, resid(., type = "normalized") ~ fitted(.) | plot/row, abline = 0)
+
+plot(m, resid(., type = "normalized") ~ fitted(.) | treat, abline = 0)
+plot(m, resid(., type = "normalized") ~ fitted(.), abline = 0)
+
+# ??????????????????? looks fine
+
+# not logged?
+# zeros?
+```
+

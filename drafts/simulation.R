@@ -1,12 +1,12 @@
-# set.seed(2)
+# set.seed(1)
 alpha <- 0.2
 sd_beta <- 0.2
 mu_beta <- 0.5
-n_groups <- 40
-sigma <- 3
+n_groups <- 9
+sigma <- 2.5
 betas <- rnorm(n_groups, mu_beta, sd_beta)
 N <- 40
-x <- seq(-1, 1, length.out = N)
+x <- rnorm(N)
 d <- data.frame(alpha = rep(alpha, each = N), beta = rep(betas, each = N), n = 1,
   sigma = sigma, x = rep(x, n_groups))
 d <- mutate(d,
@@ -14,13 +14,13 @@ d <- mutate(d,
   y = rnorm(N * n_groups, mean, sigma))
 d$group <- rep(seq_len(n_groups), each = N)
 
+# library(ggplot2)
+# ggplot(d, aes(x, y)) + geom_point() + facet_wrap(~group)
+
 med2 <- plyr::daply(d, "group", function(x) {
   m2 <- lm(y ~ x, data = x)
   coef(m2)[[2]]
 })
-
-# library(ggplot2)
-# ggplot(d, aes(x, y)) + geom_point() + facet_wrap(~group)
 
 m <- lmer(y ~ x + (x | group), data = d)
 

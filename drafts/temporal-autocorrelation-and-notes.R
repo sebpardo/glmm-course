@@ -43,7 +43,7 @@ plot(exp(d$pred), d$mean_beer);abline(a = 0, b = 1)
 # http://tiee.esa.org/vol/v8/issues/data_sets/nuding/abstract.html
 # How does nutrient pollution impact stream ecosystems locally and nationally?
 
-d <- read_csv("~/Downloads/stream.csv")
+d <- readr::read_csv("~/Downloads/stream.csv")
 names(d) <- c("epa_region", "site", "state", "county", "ntl", "log_ntl", "ptl", "mmi")
 m <- lmer(log(mmi+1) ~ log(ntl) + log(ptl+1) +
     (1 | state/county), data = d)
@@ -168,3 +168,4 @@ dplyr::filter(d, plot_name == "ABPL") %>%
 
 acf(filter(d, plot_name == "ABPL", plot_number == 1)$res_lme)
 acf(filter(d, plot_name == "ABPL", plot_number == 1)$res_lme_ar1)
+
